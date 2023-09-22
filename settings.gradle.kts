@@ -18,7 +18,7 @@ listOf(
     "epsilon-api", "symphony", "cinematic"
 ).forEach { includeBuild("../$it") }
 
-rootProject.name = "epsilon"
+rootProject.name = "epsilon-client"
 
 includeSubs("epsilon-file", "file", "fields")
 includeSubs("epsilon-image", "image", "core", "web")
