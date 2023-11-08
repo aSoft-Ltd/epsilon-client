@@ -16,7 +16,7 @@ import epsilon.files as eFiles
 fun Fields<*>.files(
     name: KProperty0<MutableList<FileBlob>>,
     label: String = name.name,
-    visibility: Visibility = Visibility.Visible,
+    visibility: Visibility = Visibilities.Visible,
     onChange: Changer<List<FileBlob>>? = null,
     factory: ValidationFactory<List<FileBlob>>? = null
 ): ListField<FileBlob> = eFiles(name, label, visibility, onChange, factory)
@@ -29,7 +29,7 @@ fun Fields<*>.file(
     name: KMutableProperty0<FileBlob?>,
     label: String = name.name,
     hint: String = label,
-    visibility: Visibility = Visibility.Visible,
+    visibility: Visibility = Visibilities.Visible,
     onChange: Changer<FileBlob>? = null,
     factory: ValidationFactory<FileBlob>? = null
 ): BaseField<FileBlob> = eFile(name, label, hint, visibility, onChange, factory)
