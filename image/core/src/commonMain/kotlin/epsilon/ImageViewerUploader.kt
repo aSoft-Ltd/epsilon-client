@@ -1,17 +1,16 @@
 @file:JsExport
 
-package symphony
+package epsilon
 
 import cinematic.Live
-import epsilon.FileBlob
 import kollections.JsExport
 import koncurrent.Later
 
 interface ImageViewerUploader {
     val state: Live<ImageViewerUploaderState>
-    val uploader: ((FileBlob) -> Later<String>)?
+    val uploader: ((RawFile) -> Later<String>)?
     fun view(url: String)
-    fun edit(image: FileBlob)
+    fun edit(image: RawFile)
 
-    fun upload(image: FileBlob): Later<String>
+    fun upload(image: RawFile): Later<String>
 }

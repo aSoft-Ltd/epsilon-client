@@ -1,11 +1,10 @@
-package symphony
+package epsilon
 
-import epsilon.FileBlob
 import koncurrent.Later
-import symphony.internal.ImageViewerUploaderImpl
+import epsilon.internal.ImageViewerUploaderImpl
 
 fun ImageViewerUploader(
-    onUpload: ((FileBlob) -> Later<String>)? = null,
+    onUpload: ((RawFile) -> Later<String>)? = null,
     url: String? = null
 ): ImageViewerUploader {
     val state = if (url != null) {

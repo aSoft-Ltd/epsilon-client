@@ -3,6 +3,9 @@
 package symphony
 
 import androidx.compose.runtime.Composable
+import epsilon.ImageUploader
+import epsilon.ImageViewerUploader
+import kotlinx.browser.window
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.display
 import org.jetbrains.compose.web.css.gridTemplateColumns
@@ -36,7 +39,7 @@ fun FileUploaderApp() {
                 placeholder = { Span { Text("Drag image here to upload") } },
                 onSave = {
                     val img = it.toFileBlob("jane.png").getOrThrow("Couldn't convert to image")
-                    kotlinx.browser.window.location.href = img.path
+                    window.location.href = img.path
                 },
                 save = {
                     Button({

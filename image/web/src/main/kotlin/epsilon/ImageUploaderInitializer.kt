@@ -1,4 +1,4 @@
-package symphony
+package epsilon
 
 import web.canvas.CanvasRenderingContext2D
 import web.canvas.RenderingContextId
@@ -29,7 +29,7 @@ fun initialize(
     val full = Position(canvasWidth, canvasHeight)
 
     var renderer = 0.unsafeCast<Timeout>()
-    image.onload = { renderer = initialize(canvas, context, image, full, color) }
+    image.then { i-> i.onload = { renderer = initialize(canvas, context, i, full, color) } }
     return renderer
 }
 

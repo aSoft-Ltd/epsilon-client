@@ -15,20 +15,20 @@ import kotlin.reflect.KProperty0
 import symphony.Visibilities
 
 fun Fields<*>.files(
-    name: KProperty0<MutableList<FileBlob>>,
+    name: KProperty0<MutableList<RawFile>>,
     label: String = name.name,
     visibility: Visibility = Visibilities.Visible,
-    onChange: Changer<List<FileBlob>>? = null,
-    factory: ValidationFactory<List<FileBlob>>? = null
-): ListField<FileBlob> = list(name, label, visibility, onChange, factory)
+    onChange: Changer<List<RawFile>>? = null,
+    factory: ValidationFactory<List<RawFile>>? = null
+): ListField<RawFile> = list(name, label, visibility, onChange, factory)
 
 fun Fields<*>.file(
-    name: KMutableProperty0<FileBlob?>,
+    name: KMutableProperty0<RawFile?>,
     label: String = name.name,
     hint: String = label,
     visibility: Visibility = Visibilities.Visible,
-    onChange: Changer<FileBlob>? = null,
-    factory: ValidationFactory<FileBlob>? = null
-): BaseField<FileBlob> = getOrCreate(name) {
+    onChange: Changer<RawFile>? = null,
+    factory: ValidationFactory<RawFile>? = null
+): BaseField<RawFile> = getOrCreate(name) {
     BaseFieldImpl(name, label, visibility, hint, onChange, factory)
 }

@@ -1,9 +1,7 @@
 @file:JsExport
 
-package symphony
+package epsilon
 
-import epsilon.Blob
-import epsilon.FileBlob
 import kollections.JsExport
 
 sealed interface ImageViewerUploaderState {
@@ -18,8 +16,8 @@ object AwaitingImage : ImageViewerUploaderState
 
 data class ViewingImage(val url: String) : ImageViewerUploaderState
 
-data class LoadingToEditImage(val image: FileBlob) : ImageViewerUploaderState
+data class LoadingToEditImage(val image: RawFile) : ImageViewerUploaderState
 
-data class EditingImage(val image: FileBlob) : ImageViewerUploaderState
+data class EditingImage(val image: RawFile) : ImageViewerUploaderState
 
-data class UploadingImage(val image: Blob) : ImageViewerUploaderState
+data class UploadingImage(val image: RawFile) : ImageViewerUploaderState

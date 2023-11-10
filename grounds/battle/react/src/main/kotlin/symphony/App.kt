@@ -2,6 +2,9 @@
 
 package symphony
 
+import epsilon.ImageUploader
+import epsilon.ImageViewerUploader
+import epsilon.InternalImageUploader
 import js.core.jso
 import koncurrent.Later
 import react.FC

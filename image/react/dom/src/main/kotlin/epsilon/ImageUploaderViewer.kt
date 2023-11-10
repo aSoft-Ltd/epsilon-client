@@ -1,16 +1,12 @@
-package symphony
+package epsilon
 
 import js.core.jso
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
-import react.dom.html.ReactHTML.span
-import web.cssom.AlignItems
 import web.cssom.BackgroundPosition
 import web.cssom.BackgroundRepeat
 import web.cssom.BackgroundSize
-import web.cssom.Display
-import web.cssom.JustifyContent
 import web.cssom.pct
 import web.cssom.url
 

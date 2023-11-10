@@ -1,4 +1,4 @@
-package symphony
+package epsilon
 
 import js.core.jso
 import react.FC

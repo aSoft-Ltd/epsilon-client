@@ -1,11 +1,10 @@
 @file:Suppress("NOTHING_TO_INLINE", "NON_EXPORTABLE_TYPE")
 
-package symphony
+package epsilon
 
 import cinematic.watchAsState
-import epsilon.BrowserBlob
 import js.core.jso
-import org.w3c.files.Blob
+import org.w3c.files.FilePropertyBag
 import react.ChildrenBuilder
 import react.FC
 import react.Fragment
@@ -45,7 +44,7 @@ external interface ImageUploaderProps : Props {
     var loading: ReactNode?
     var viewer: FC<ImageUploaderViewerProps>?
     var save: ReactNode?
-    var onSave: ((BrowserBlob) -> Unit)?
+    var onSave: ((RawFile) -> Unit)?
     var color: String?
 }
 
@@ -129,11 +128,9 @@ val InternalImageUploader = FC<ImageUploaderProps>(NAME) { props ->
                 style = jso { width = 100.pct }
                 onClick = {
                     canvasRef.current?.toBlob({
-                        val b = it?.unsafeCast<Blob>() ?: return@toBlob
-                        val blob = BrowserBlob(b)
-                        props.onSave?.invoke(blob)
-                        val file = blob.toFileBlob("image.png").getOrNull() ?: return@toBlob
-                        scene.upload(file)
+                        if (it == null) return@toBlob
+                        val rf = RawFile(arrayOf(it), "image.png", FilePropertyBag(type = it.type))
+                        props.onSave?.invoke(rf)
                     }, "image/png", 1)
                 }
                 child(save)
@@ -146,7 +143,7 @@ inline fun ChildrenBuilder.ImageUploader(
     scene: ImageViewerUploader,
     noinline placeholder: (ChildrenBuilder.() -> Unit)? = null,
     noinline save: (ChildrenBuilder.() -> Unit)? = null,
-    noinline onSave: ((BrowserBlob) -> Unit)? = null,
+    noinline onSave: ((RawFile) -> Unit)? = null,
     color: String? = null
 ) = InternalImageUploader {
     this.scene = scene

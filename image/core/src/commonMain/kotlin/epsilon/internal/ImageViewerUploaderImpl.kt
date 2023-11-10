@@ -1,20 +1,22 @@
-package symphony.internal
+package epsilon.internal
 
 import cinematic.mutableLiveOf
-import epsilon.FileBlob
+import epsilon.EditingImage
+import epsilon.ImageViewerUploader
+import epsilon.ImageViewerUploaderState
+import epsilon.RawFile
+import epsilon.RawFileInfo
+import epsilon.UploadingImage
+import epsilon.ViewingImage
 import kase.Failure
 import kase.Success
+import koncurrent.FailedLater
 import koncurrent.Later
 import koncurrent.later.finally
-import symphony.EditingImage
-import symphony.ImageViewerUploader
-import symphony.ImageViewerUploaderState
-import symphony.UploadingImage
-import symphony.ViewingImage
 
 internal class ImageViewerUploaderImpl(
     start: ImageViewerUploaderState,
-    override val uploader: ((FileBlob) -> Later<String>)? = null
+    override val uploader: ((RawFile) -> Later<String>)? = null
 ) : ImageViewerUploader {
     override val state = mutableLiveOf(start)
 
@@ -23,14 +25,14 @@ internal class ImageViewerUploaderImpl(
         state.value = ViewingImage(url)
     }
 
-    override fun edit(image: FileBlob) {
-        name = image.name
+    override fun edit(image: RawFile) {
+        name = RawFileInfo(image).name
         state.value = EditingImage(image)
     }
 
-    override fun upload(image: FileBlob): Later<String> {
+    override fun upload(image: RawFile): Later<String> {
         state.value = UploadingImage(image)
-        val handler = uploader ?: { Later(image.path) }
+        val handler = uploader ?: { FailedLater("Can't upload without an uploader") }
         return handler(image).finally {
             when (it) {
                 is Success -> view(it.data)

@@ -1,6 +1,6 @@
 @file:Suppress("NOTHING_TO_INLINE")
 
-package symphony
+package epsilon
 
 import web.html.Image
 import web.uievents.MouseEvent
