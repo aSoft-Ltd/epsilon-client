@@ -3,7 +3,7 @@
 package epsilon
 
 import cinematic.Live
-import kollections.JsExport
+import kotlinx.JsExport
 import koncurrent.Later
 
 interface ImageViewerUploader {

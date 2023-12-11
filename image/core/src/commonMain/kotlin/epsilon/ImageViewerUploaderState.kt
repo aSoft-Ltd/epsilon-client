@@ -2,7 +2,7 @@
 
 package epsilon
 
-import kollections.JsExport
+import kotlinx.JsExport
 
 sealed interface ImageViewerUploaderState {
     val asAwaiting get() = this as? AwaitingImage
