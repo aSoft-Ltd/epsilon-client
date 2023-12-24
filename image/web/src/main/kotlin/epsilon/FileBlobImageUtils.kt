@@ -2,6 +2,7 @@ package epsilon
 
 import js.core.asList
 import org.w3c.dom.asList
+import koncurrent.later.then
 import org.w3c.files.File
 import org.w3c.files.FileList as W3CFileList
 import web.file.FileList as WebFileList

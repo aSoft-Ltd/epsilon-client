@@ -7,6 +7,7 @@ import web.html.HTMLDivElement
 import web.html.Image
 import web.timers.Timeout
 import web.timers.setInterval
+import koncurrent.later.then
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration.Companion.milliseconds
