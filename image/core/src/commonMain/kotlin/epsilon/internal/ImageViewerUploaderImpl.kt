@@ -43,6 +43,6 @@ internal class ImageViewerUploaderImpl(
                 is Success -> view(it.data)
                 is Failure -> edit(image)
             }
-        }
+        } as Later<String>
     }
 }
