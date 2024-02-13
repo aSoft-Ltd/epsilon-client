@@ -7,11 +7,6 @@ import epsilon.ImageViewerUploader
 import epsilon.InternalImageUploader
 import js.core.jso
 import koncurrent.Later
-import koncurrent.later.then
-import koncurrent.later.andThen
-import koncurrent.later.andZip
-import koncurrent.later.zip
-import koncurrent.later.catch
 import react.FC
 import react.Fragment
 import react.Props
@@ -54,8 +49,9 @@ val FileUploaderApp = FC<Props> {
                 scene = ImageViewerUploader(url = "/raiden.png"),
                 placeholder = { span { +"Drag image here to upload" } },
                 onSave = {
-                    val img = it.toFileBlob("jane.png").getOrThrow("Couldn't convert to image")
-                    kotlinx.browser.window.location.href = img.path
+//                    val img = it.toFileBlob("jane.png").getOrThrow("Couldn't convert to image")
+//                    kotlinx.browser.window.location.href = img.path
+                    console.log("Saving ${it.name}")
                 },
                 save = {
                     button {
