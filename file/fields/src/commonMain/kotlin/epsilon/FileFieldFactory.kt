@@ -1,44 +1,66 @@
 package epsilon
 
+import epsilon.internal.MultiFileFieldImpl
+import epsilon.internal.SingleFileFieldImpl
 import kollections.List
 import kollections.MutableList
-import kotlin.reflect.KMutableProperty0
-import kotlin.reflect.KProperty0
+import kollections.emptyList
+import kollections.map
+import kollections.mapNotNull
 import neat.ValidationFactory
-import symphony.BaseField
 import symphony.Changer
 import symphony.Fields
-import symphony.ListField
 import symphony.Visibilities
 import symphony.Visibility
 import symphony.internal.FieldBacker
-import symphony.internal.GenericBaseField
-import symphony.list
+import kotlin.reflect.KMutableProperty0
 
 fun Fields<*>.files(
-    name: KProperty0<MutableList<RawFile>>,
+    name: KMutableProperty0<MutableList<FileOutput>>,
     label: String = name.name,
+    value: List<String>? = name.get().mapNotNull { it.url },
     visibility: Visibility = Visibilities.Visible,
-    onChange: Changer<List<RawFile>>? = null,
-    factory: ValidationFactory<List<RawFile>>? = null
-): ListField<RawFile> = list(name, label, visibility, onChange, factory)
+    onChange: Changer<List<FileOutput>>? = null,
+    factory: ValidationFactory<List<FileOutput>>? = null
+): MultiFileField {
+    val backer = FieldBacker.Prop(name as KMutableProperty0<MutableList<FileOutput>?>)
+    return MultiFileFieldImpl(backer, value?.toOutput() ?: name.get(), label, visibility, onChange, factory)
+}
+
+fun FilesField(
+    name: String,
+    label: String = name,
+    value: List<String> = emptyList(),
+    visibility: Visibility = Visibilities.Visible,
+    onChange: Changer<List<FileOutput>>? = null,
+    factory: ValidationFactory<List<FileOutput>>? = null
+): MultiFileField {
+    val backer = FieldBacker.Name(name)
+    return MultiFileFieldImpl(backer, value.toOutput(), label, visibility, onChange, factory)
+}
 
 fun FileField(
     name: String,
     label: String = name,
     hint: String = label,
+    value: String? = null,
     visibility: Visibility = Visibilities.Visible,
-    onChange: Changer<RawFile>? = null,
-    factory: ValidationFactory<RawFile>? = null
-): BaseField<RawFile> = GenericBaseField(FieldBacker.Name(name), null, label, visibility, hint, onChange, factory)
+    onChange: Changer<FileOutput>? = null,
+    factory: ValidationFactory<FileOutput>? = null
+): SingleFileField = SingleFileFieldImpl(FieldBacker.Name(name), value.toOutput(), label, visibility, hint, onChange, factory)
 
 fun Fields<*>.file(
-    name: KMutableProperty0<RawFile?>,
+    name: KMutableProperty0<FileOutput?>,
     label: String = name.name,
     hint: String = label,
+    value: String? = name.get()?.url,
     visibility: Visibility = Visibilities.Visible,
-    onChange: Changer<RawFile>? = null,
-    factory: ValidationFactory<RawFile>? = null
-): BaseField<RawFile> = getOrCreate(name) {
-    GenericBaseField(FieldBacker.Prop(name), null, label, visibility, hint, onChange, factory)
+    onChange: Changer<FileOutput>? = null,
+    factory: ValidationFactory<FileOutput>? = null
+): SingleFileField = getOrCreate(name) {
+    SingleFileFieldImpl(FieldBacker.Prop(name), value.toOutput(), label, visibility, hint, onChange, factory)
 }
+
+private fun String?.toOutput() = FileOutput(url = this, updated = false, loading = false, null)
+
+private fun List<String>.toOutput() = map { it.toOutput() }
