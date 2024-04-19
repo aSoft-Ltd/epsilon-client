@@ -8,6 +8,7 @@ import kollections.List
 import kollections.MutableList
 import kollections.map
 import koncurrent.later.catch
+import koncurrent.later.finally
 import koncurrent.later.then
 import neat.ValidationFactory
 import symphony.Changer
@@ -29,9 +30,8 @@ internal class MultiFileFieldImpl(
         add(output)
         RawFileInfo(file).path().then {
             output.url = it
-        }.catch {
+        }.finally {
             output.loading = false
-        }.then {
             state.value = state.value
         }
     }
