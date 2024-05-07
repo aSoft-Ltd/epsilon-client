@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(libs.epsilon.api.file)
+                api(libs.epsilon.core)
                 api(libs.cinematic.live.core)
             }
         }

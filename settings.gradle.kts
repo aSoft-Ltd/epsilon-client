@@ -20,7 +20,7 @@ listOf(
 
 rootProject.name = "epsilon-client"
 
-includeSubs("epsilon-file", "file", "fields")
+includeSubs("epsilon", ".", "fields")
 includeSubs("epsilon-image", "image", "core", "web")
 includeSubs("epsilon-image-react", "image/react", "core", "dom")
 includeSubs("epsilon-image-compose", "image/compose", "core", "html")
