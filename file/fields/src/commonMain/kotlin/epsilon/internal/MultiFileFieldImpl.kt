@@ -6,16 +6,15 @@ import epsilon.RawFile
 import epsilon.RawFileInfo
 import kollections.List
 import kollections.MutableList
+import kollections.forEach
 import kollections.map
-import koncurrent.later.catch
-import koncurrent.later.finally
-import koncurrent.later.then
 import neat.ValidationFactory
 import symphony.Changer
 import symphony.Visibility
 import symphony.internal.FieldBacker
 import symphony.internal.ListFieldImpl
 
+@Suppress("NOTHING_TO_INLINE")
 internal class MultiFileFieldImpl(
     backer: FieldBacker<MutableList<FileOutput>>,
     value: List<FileOutput>,
@@ -26,14 +25,8 @@ internal class MultiFileFieldImpl(
 ) : ListFieldImpl<FileOutput>(backer, value, label, visibility, onChange, factory), MultiFileField {
 
     override fun addFile(file: RawFile) {
-        val output = FileOutput(url = null, updated = true, loading = true, file)
-        add(output)
-        RawFileInfo(file).path().then {
-            output.url = it
-        }.finally {
-            output.loading = false
-            state.value = state.value
-        }
+        val info = RawFileInfo(file)
+        add(FileOutput(url = info.url, updated = true, info = info, file = info.file))
     }
 
     override fun addAllFiles(file: List<RawFile>) {
@@ -48,5 +41,15 @@ internal class MultiFileFieldImpl(
         addAll(url.map { it.toOutput() })
     }
 
-    private fun String.toOutput() = FileOutput(url = this, updated = true, loading = false, null)
+    override fun remove(item: FileOutput) {
+        item.info?.dispose()
+        super.remove(item)
+    }
+
+    override fun clear() {
+        state.value.output.forEach { it.info?.dispose() }
+        super.clear()
+    }
+
+    private inline fun String.toOutput() = FileOutput(url = this, updated = true, null)
 }

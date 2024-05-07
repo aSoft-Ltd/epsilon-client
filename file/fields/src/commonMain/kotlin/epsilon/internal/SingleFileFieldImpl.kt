@@ -4,8 +4,6 @@ import epsilon.FileOutput
 import epsilon.RawFile
 import epsilon.RawFileInfo
 import epsilon.SingleFileField
-import koncurrent.later.catch
-import koncurrent.later.then
 import neat.ValidationFactory
 import symphony.Changer
 import symphony.Visibility
@@ -22,23 +20,24 @@ internal class SingleFileFieldImpl(
     factory: ValidationFactory<FileOutput>?,
 ) : GenericBaseField<FileOutput>(backer, value, label, visibility, hint, onChange, factory), SingleFileField {
 
-    private val initial = FileOutput(url = value?.url, updated = false, loading = false, file = value?.file)
-
     override fun set(file: RawFile) {
-        val current = state.value.output ?: initial
-        val loading = current.copy(loading = true)
-        set(loading)
-        RawFileInfo(file).path().then {
-            loading.copy(updated = true, loading = false, url = it, file = file)
-        }.catch {
-            loading.copy(loading = false)
-        }.then {
-            set(it)
-        }
+        state.value.output?.info?.dispose()
+        val info = RawFileInfo(file)
+        set(FileOutput(updated = true, url = info.url, info = info, file = info.file))
     }
 
     override fun set(url: String) {
-        val current = state.value.output ?: initial
-        set(current.copy(url = url, updated = true, file = null))
+        state.value.output?.info?.dispose()
+        set(FileOutput(updated = true, url = url, info = null, file = null))
+    }
+
+    override fun finish() {
+        state.value.output?.info?.dispose()
+        super.finish()
+    }
+
+    override fun clear() {
+        state.value.output?.info?.dispose()
+        super.clear()
     }
 }
