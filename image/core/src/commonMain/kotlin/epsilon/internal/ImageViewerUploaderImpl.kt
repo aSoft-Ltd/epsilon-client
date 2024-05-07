@@ -31,7 +31,7 @@ internal class ImageViewerUploaderImpl(
     }
 
     override fun edit(image: RawFile) {
-        name = RawFileInfo(image).name
+        name = RawFileInfo(image).nameWithExtension
         state.value = EditingImage(image)
     }
 
