@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.compose")
     kotlin("multiplatform")
     id("tz.co.asoft.library")
+    kotlin("plugin.compose")
 }
 
 description = "A kotlin multiplatform library for helping in uploading images using compose-multiplatform"

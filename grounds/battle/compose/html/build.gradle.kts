@@ -2,6 +2,7 @@ plugins {
     id("org.jetbrains.compose")
     kotlin("multiplatform")
     id("tz.co.asoft.library")
+    kotlin("plugin.compose")
 }
 
 description = "A sample for image input in compose"
