@@ -1,6 +1,7 @@
 package epsilon
 
-import js.core.jso
+//import js.core.jso
+import js.objects.jso
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.button

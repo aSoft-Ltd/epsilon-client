@@ -1,6 +1,7 @@
 package epsilon
 
-import js.core.jso
+//import js.core.jso
+import js.objects.jso
 import react.FC
 import react.Props
 import react.dom.html.ReactHTML.div
@@ -16,7 +17,7 @@ external interface ImageUploaderWrapperProps : Props {
 
 internal val ImageUploaderWrapper = FC<ImageUploaderWrapperProps> { props ->
     div {
-        style = jso {
+        style = jso() {
             display = Display.flex
             justifyContent = JustifyContent.center
             alignItems = AlignItems.center

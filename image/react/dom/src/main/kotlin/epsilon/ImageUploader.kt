@@ -3,19 +3,13 @@
 package epsilon
 
 import cinematic.watchAsState
-import js.core.jso
+//import js.core.jso
+import js.objects.jso
 import org.w3c.files.FilePropertyBag
-import react.ChildrenBuilder
-import react.FC
-import react.Fragment
-import react.Props
-import react.ReactNode
-import react.create
+import react.*
 import react.dom.html.ReactHTML.canvas
 import react.dom.html.ReactHTML.div
 import react.dom.html.ReactHTML.input
-import react.useEffect
-import react.useRef
 import web.cssom.Auto
 import web.cssom.Color
 import web.cssom.Cursor
@@ -32,6 +26,7 @@ import web.html.HTMLDivElement
 import web.html.HTMLInputElement
 import web.html.InputType
 import web.timers.clearInterval
+import web.timers.clearTimeout
 
 private const val COLOR = "gray"
 private const val NAME = "ImageUploader"
@@ -63,9 +58,10 @@ val InternalImageUploader = FC<ImageUploaderProps>(NAME) { props ->
     val save = props.save ?: ImageUploaderSave.create()
     val viewer = props.viewer ?: ImageUploaderViewer
 
-    useEffect(state, canvasRef.current) {
+    useEffectWithCleanup (state, canvasRef.current) {
         val renderer = initialize(canvasRef.current, saveRef.current, state, primaryColor)
-        cleanup { if (renderer != null) clearInterval(renderer) }
+//        onCleanup { if (renderer != null) clearInterval(renderer) }
+        onCleanup { if (renderer != null) clearTimeout(renderer) }
     }
 
     div {
@@ -107,7 +103,7 @@ val InternalImageUploader = FC<ImageUploaderProps>(NAME) { props ->
                 gridTemplateRows = array(1.fr, Auto.auto)
             }
             when (state) {
-                is AwaitingImage -> child(placeholder)
+                is AwaitingImage -> placeholder.unaryPlus()
                 is EditingImage -> canvas {
                     ref = canvasRef
                     style = jso {
@@ -118,8 +114,8 @@ val InternalImageUploader = FC<ImageUploaderProps>(NAME) { props ->
                     }
                 }
 
-                is LoadingToEditImage -> child(loading)
-                is UploadingImage -> child(uploading)
+                is LoadingToEditImage -> loading.unaryPlus()
+                is UploadingImage -> uploading.unaryPlus()
                 is ViewingImage -> viewer { url = state.url }
             }
 
@@ -131,9 +127,9 @@ val InternalImageUploader = FC<ImageUploaderProps>(NAME) { props ->
                         if (it == null) return@toBlob
                         val rf = RawFile(arrayOf(it), "image.png", FilePropertyBag(type = it.type))
                         props.onSave?.invoke(rf)
-                    }, "image/png", 1)
+                    }, "image/png", 1.0)
                 }
-                child(save)
+                save.unaryPlus()
             }
         }
     }

@@ -1,13 +1,15 @@
 package epsilon
 
 import web.canvas.CanvasRenderingContext2D
-import web.canvas.RenderingContextId
+//import web.canvas.RenderingContextId
 import web.html.HTMLCanvasElement
 import web.html.HTMLDivElement
 import web.html.Image
 import web.timers.Timeout
 import web.timers.setInterval
 import koncurrent.later.then
+import web.events.EventHandler
+import web.timers.setTimeout
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.time.Duration.Companion.milliseconds
@@ -25,12 +27,14 @@ fun initialize(
     val canvasHeight = parent.offsetHeight - saveElement.offsetHeight
     canvas.width = parent.offsetWidth
     canvas.height = canvasHeight
-    val context = canvas.getContext(RenderingContextId.canvas) ?: return null
+
+//    val context = canvas.getContext(RenderingContextId.canvas) ?: return null
+    val context = canvas.getContext(CanvasRenderingContext2D.ID) ?: return null
     val image = fileBlobAsImage.toImage()
     val full = Position(canvasWidth, canvasHeight)
 
     var renderer = 0.unsafeCast<Timeout>()
-    image.then { i-> i.onload = { renderer = initialize(canvas, context, i, full, color) } }
+    image.then { i-> i.onload = EventHandler { renderer = initialize(canvas, context, i, full, color) } }
     return renderer
 }
 
@@ -55,36 +59,44 @@ fun initialize(
 
     var imageAnchor = startPoint
 
-    canvas.onmousedown = {
+    canvas.onmousedown = EventHandler {event->
         dragging = true
-        dragStart.update(it)
+        dragStart.update(event)
         dragRef = imageAnchor
     }
 
-    canvas.onwheel = {
-        it.preventDefault()
-        scale += it.deltaY * -0.01
+    canvas.onwheel = EventHandler {event->
+        event.preventDefault()
+        scale += event.deltaY * -0.01
 
         // Restrict scale
         scale = min(max(0.125, scale), 4.0)
         imageAnchor = startPoint + size * (1 - scale) / 2
     }
 
-    canvas.onmousemove = {
+    canvas.onmousemove = EventHandler { event->
         if (dragging) {
-            val dragEnd = it.toPosition()
+            val dragEnd = event.toPosition()
             val dDrag = dragEnd - dragStart
             imageAnchor = dragRef + dDrag
         }
     }
 
-    canvas.onmouseup = { dragging = false }
+    canvas.onmouseup = EventHandler { dragging = false }
 
-    return setInterval(10.milliseconds) { // 100 frames per seconds
-        context.clearRect(0, 0, full.x, full.y)
+    return setTimeout(10.milliseconds) { // 100 frames per seconds
+        context.clearRect(0.0, 0.0, full.x.toDouble(), full.y.toDouble())
         context.fillStyle = color
-        context.fillRect(0, 0, full.x, full.y)
+        context.fillRect(0.0, 0.0, full.x.toDouble(), full.y.toDouble())
         val s = size * scale
-        context.drawImage(image, imageAnchor.x, imageAnchor.y, s.x, s.y)
+        context.drawImage(image, imageAnchor.x.toDouble(), imageAnchor.y.toDouble(), s.x.toDouble(), s.y.toDouble())
     }
+
+//    return setInterval(10.milliseconds) { // 100 frames per seconds
+//        context.clearRect(0, 0, full.x, full.y)
+//        context.fillStyle = color
+//        context.fillRect(0, 0, full.x, full.y)
+//        val s = size * scale
+//        context.drawImage(image, imageAnchor.x, imageAnchor.y, s.x, s.y)
+//    }
 }
