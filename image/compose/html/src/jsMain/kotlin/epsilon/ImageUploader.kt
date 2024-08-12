@@ -27,6 +27,7 @@ import web.html.HTMLCanvasElement
 import web.html.HTMLDivElement
 import web.html.HTMLInputElement
 import web.timers.clearInterval
+import web.timers.clearTimeout
 
 @Composable
 fun ImageUploader(
@@ -48,7 +49,7 @@ fun ImageUploader(
     DisposableEffect(canvas, saveWrapper, state, color) {
         val renderer = initialize(canvas, saveWrapper, state, color ?: "gray")
         onDispose {
-            if (renderer != null) clearInterval(renderer)
+            if (renderer != null) clearTimeout(renderer)
         }
     }
 
@@ -122,7 +123,7 @@ fun ImageUploader(
                     val b = it?.unsafeCast<Blob>() ?: return@toBlob
                     val blob = BrowserBlob(b)
                     onSave?.invoke(blob)
-                }, "image/png", 1)
+                }, "image/png", 1.0)
             }
         }) { save?.invoke() ?: ImageUploaderSave() }
     }
