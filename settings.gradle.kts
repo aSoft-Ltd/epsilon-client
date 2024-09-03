@@ -26,5 +26,5 @@ includeSubs("epsilon-image-react", "image/react", "core", "dom")
 includeSubs("epsilon-image-compose", "image/compose", "core", "html")
 
 // grounds
-includeSubs("grounds-battle", "grounds/battle", "react")
-includeSubs("grounds-battle-compose", "grounds/battle/compose", "core", "html")
+//includeSubs("grounds-battle", "grounds/battle", "react")
+//includeSubs("grounds-battle-compose", "grounds/battle/compose", "core", "html")
