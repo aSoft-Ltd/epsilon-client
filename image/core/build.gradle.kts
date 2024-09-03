@@ -9,8 +9,8 @@ description = "A kotlin multiplatform library for headless image input uploads"
 kotlin {
     jvm { library() }
     if (Targeting.JS) js(IR) { library() }
-//    if (Targeting.WASM) wasm { library() }
-    val osxTargets = if (Targeting.OSX) osxTargets() else listOf()
+    if (Targeting.WASM) wasmJs { library() }
+    val osxTargets = if (Targeting.OSX) (iosTargets() + macOsTargets()) else listOf()
 //    val ndkTargets = if (Targeting.NDK) ndkTargets() else listOf()
     val linuxTargets = if (Targeting.LINUX) linuxTargets() else listOf()
 //    val mingwTargets = if (Targeting.MINGW) mingwTargets() else listOf()

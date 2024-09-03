@@ -7,13 +7,11 @@ plugins {
 description = "A kotlin multiplatform library for headless input file fields"
 
 kotlin {
-    jvm { library() }
+    if (Targeting.JVM) jvm { library() }
     if (Targeting.JS) js(IR) { library() }
-//    if (Targeting.WASM) wasm { library() }
-    val osxTargets = if (Targeting.OSX) osxTargets() else listOf()
-//    val ndkTargets = if (Targeting.NDK) ndkTargets() else listOf()
-    val linuxTargets = if (Targeting.LINUX) linuxTargets() else listOf()
-//    val mingwTargets = if (Targeting.MINGW) mingwTargets() else listOf()
+    if (Targeting.JS) wasmJs { library() }
+    if (Targeting.OSX) (iosTargets() + macOsTargets())
+    if (Targeting.LINUX) linuxTargets()
 
     sourceSets {
         val commonMain by getting {
