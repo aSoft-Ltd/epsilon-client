@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.npm.tasks.KotlinNpmInstallTask
 
 plugins {
@@ -17,24 +16,19 @@ kotlin {
     if (Targeting.LINUX) linuxTargets()
 
     sourceSets {
-        val commonMain by getting {
-            dependencies {
-                api(libs.epsilon.core)
-                api(libs.symphony.input.core)
-            }
+        commonMain.dependencies {
+            api(libs.epsilon.core)
+            api(libs.symphony.input.core)
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kommander.core)
-            }
+        commonTest.dependencies {
+            implementation(libs.kommander.core)
+        }
+
+        if (Targeting.JVM) jvmMain.dependencies {
+            implementation(kotlin("test-junit5"))
         }
     }
-}
-
-rootProject.the<NodeJsRootExtension>().apply {
-    version = npm.versions.node.version.get()
-    downloadBaseUrl = npm.versions.node.url.get()
 }
 
 rootProject.tasks.withType<KotlinNpmInstallTask>().configureEach {
