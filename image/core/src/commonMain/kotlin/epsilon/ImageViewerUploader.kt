@@ -5,11 +5,11 @@ package epsilon
 import cinematic.Live
 import kotlinx.JsExport
 import koncurrent.Later
-import koncurrent.later.then
-import koncurrent.later.andThen
-import koncurrent.later.andZip
-import koncurrent.later.zip
-import koncurrent.later.catch
+import koncurrent.awaited.then
+import koncurrent.awaited.andThen
+import koncurrent.awaited.andZip
+import koncurrent.awaited.zip
+import koncurrent.awaited.catch
 
 interface ImageViewerUploader {
     val state: Live<ImageViewerUploaderState>

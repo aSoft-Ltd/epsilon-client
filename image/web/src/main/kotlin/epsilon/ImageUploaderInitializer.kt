@@ -7,7 +7,7 @@ import web.html.HTMLDivElement
 import web.html.Image
 import web.timers.Timeout
 import web.timers.setInterval
-import koncurrent.later.then
+import koncurrent.awaited.then
 import web.events.EventHandler
 import web.timers.setTimeout
 import kotlin.math.max
