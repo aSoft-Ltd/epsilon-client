@@ -19,10 +19,3 @@ kotlin {
         }
     }
 }
-
-compose {
-    kotlinCompilerPlugin.set(kotlinz.versions.compose.compiler)
-    kotlinCompilerPluginArgs.add(kotlinz.versions.kotlin.map {
-        "suppressKotlinVersionCompatibilityCheck=$it"
-    })
-}
